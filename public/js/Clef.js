@@ -10,9 +10,11 @@ export default class Clef {
   }
   draw() {
     const { score, staff, position, clef } = this;
-    const spacing =score.spacing*staff.spacing;
-    score.ctx.font = `${spacing*staff.lines}px 'Music'` 
-    score.ctx.fillText(score.glyph(clef), staff.position.left+position.left*spacing ,staff.position.top+position.top*spacing)
+    const spacing =score.rastralSize*staff.size;
+    score.ctx.font = `${spacing*(staff.lines-1)}px 'Music'` 
+    score.ctx.fillText(score.glyph(clef), 
+      staff.position.left+position.left*spacing,
+      staff.position.top+position.top*spacing)
     score.ctx.fill()
   }
 }
