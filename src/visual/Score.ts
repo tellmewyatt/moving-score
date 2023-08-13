@@ -1,6 +1,17 @@
 import System from "./System.js"
 export default class Score {
-  constructor(container) {
+  container: HTMLElement;
+  canvas: HTMLCanvasElement;
+  ctx: CanvasRenderingContext2D;
+  glyphs: any;
+  fontMeta: any;
+  rastralSize: number;
+  durationThickness: number;
+  durationMargin: number;
+  lineWidth: number;
+  children: any[]
+  textFont: string;
+  constructor(container: HTMLElement) {
     this.container = container;
     this.canvas = document.createElement("canvas")
     this.ctx = this.canvas.getContext("2d")
@@ -14,13 +25,13 @@ export default class Score {
     this.children = []
     this.textFont = "Georgia"
   }
-  setupCanvas() {
+  setupCanvas(){
     const {canvas, container} = this
     const dpr = window.devicePixelRatio;
     canvas.setAttribute("width", 
-      container.clientWidth)
+      `${container.clientWidth}px`)
     canvas.setAttribute("height", 
-      container.clientHeight)
+      `${container.clientHeight}px`)
     var rect = canvas.getBoundingClientRect();
     canvas.width = rect.width*dpr;
     canvas.height = rect.height*dpr;
@@ -28,7 +39,7 @@ export default class Score {
     canvas.style.width = "100%"
     this.ctx.scale(dpr, dpr)
   }
-  async init() {
+  async init(){
     await this.loadFonts()
     this.setupCanvas()
     return true
@@ -43,29 +54,29 @@ export default class Score {
     this.fontMeta = await res.json()
     return true
   }
-  glyph(string) {
+  glyph(glyphname: string):string {
     try {
     return decodeURIComponent(JSON.parse(
-      `"\\u${this.glyphs[string].codepoint.slice(2)}"`));
+      `"\\u${this.glyphs[glyphname].codepoint.slice(2)}"`));
     }
     catch {
-      console.error(`Glyph ${string} not found`)
+      console.error(`Glyph ${glyphname} not found`)
       return "Error"
     }
   }
-  getGlyphBBox(string) {
+  getGlyphBBox(glyphname: string): { bBoxNE: [number, number], bBoxSW: [number, number] } {
     try {
-      return this.fontMeta.glyphBBoxes[string]
+      return this.fontMeta.glyphBBoxes[glyphname]
     }
     catch {
-      throw Error(`Unable to find bounding box for glyph ${string}`)
+      throw Error(`Unable to find bounding box for glyph ${glyphname}`)
     }
   }
-  addSystem(position, width) {
+  addSystem(position: { top: number, left: number }, width: number): System {
     this.children.push(new System(this, position, width))
     return this.children[this.children.length-1]
   }
-  draw() {
+  draw(): void {
     this.children.forEach(child => child.draw())
   }
 }

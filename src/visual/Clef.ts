@@ -1,5 +1,12 @@
+import Score from "./Score";
+import Staff from "./Staff";
+
 export default class Clef {
-  constructor (score, staff, clef = "gClef") {
+  clef: string;
+  score: Score;
+  staff: Staff;
+  position: { top: number, left: number }
+  constructor (score: Score, staff: Staff, clef: string = "gClef") {
     this.clef = clef
     this.score = score
     this.staff = staff
@@ -8,7 +15,7 @@ export default class Clef {
       left: 0.5 
     }
   }
-  draw() {
+  draw(): void {
     const { score, staff, position, clef } = this;
     const spacing =score.rastralSize*staff.size;
     score.ctx.font = `${spacing*(staff.lines-1)}px 'Music'` 

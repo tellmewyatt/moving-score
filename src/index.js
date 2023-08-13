@@ -1,4 +1,4 @@
-import Score from './Score.js'
+import Score from './visual/Score.js'
 
 const score = new Score(document.body)
 score.init().then(() => {

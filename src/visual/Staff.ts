@@ -1,14 +1,23 @@
 import Clef from "./Clef.js"
 import Note from "./Note.js";
+import Score from "./Score.js";
 export default class Staff {
+  score: Score;
+  name: string;
+  position: { top: number, left: number };
+  width: number;
+  lines: number;
+  children: any[];
+  height: number
+  size: number
   constructor (
-    score,
-    name,
-    position = {
+    score: Score,
+    name: string,
+    position: { top: number, left: number } = {
       left: 20,
       top: 20
     },
-    width
+    width: number
   ) {
     this.score = score // Pointer to containing score
     this.name = name
@@ -19,7 +28,7 @@ export default class Staff {
     this.children = []; 
     this.height = (this.lines-1)*this.size*score.rastralSize
   }
-  drawLines () {
+  drawLines (): void {
     const { score } = this
     for (let l = 0; l < this.lines; l++) {
       score.ctx.strokeStyle = `${score.lineWidth}px black`
@@ -32,7 +41,7 @@ export default class Staff {
       score.ctx.stroke()
     }
   }
-  drawLabel () {
+  drawLabel (): void {
     const { score } = this
     const ctx = score.ctx
     const fontSize = 3*this.size*score.rastralSize;
@@ -42,15 +51,16 @@ export default class Staff {
       this.position.left - score.rastralSize,
       this.position.top + score.rastralSize*3)
   }
-  draw () {
+  draw (): void {
     this.drawLines()
     this.drawLabel()
     this.children.forEach(child => child.draw())
   }
-  addClef (clef) {
+  addClef (clef: string): Clef {
     this.children.push( new Clef( this.score, this, clef))
+    return this.children[this.children.length - 1]
   }
-  addNote (glyph, position, accidental) {
+  addNote (glyph: string, position: { top: number, left: number }, accidental: string): Note {
     this.children.push(
       new Note(this.score, this, position, glyph, accidental))
     return this.children[this.children.length - 1]
