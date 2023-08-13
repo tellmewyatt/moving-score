@@ -1,4 +1,5 @@
 import Clef from "./Clef.js"
+import Note from "./Note.js";
 export default class Staff {
   constructor (
     score,
@@ -38,5 +39,10 @@ export default class Staff {
   }
   addClef (clef) {
     this.children.push( new Clef( this.score, this, clef))
+  }
+  addNote (glyph, position, accidental) {
+    this.children.push(
+      new Note(this.score, this, position, glyph, accidental))
+    return this.children[this.children.length - 1]
   }
 }
