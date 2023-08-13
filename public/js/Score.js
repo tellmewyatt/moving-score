@@ -12,6 +12,7 @@ export default class Score {
     this.lineWidth = 1;
     this.container.appendChild(this.canvas)
     this.children = []
+    this.textFont = "Georgia"
   }
   setupCanvas() {
     const {canvas, container} = this

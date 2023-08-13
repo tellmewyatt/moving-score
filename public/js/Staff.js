@@ -32,10 +32,20 @@ export default class Staff {
       score.ctx.stroke()
     }
   }
+  drawLabel () {
+    const { score } = this
+    const ctx = score.ctx
+    const fontSize = 3*this.size*score.rastralSize;
+    ctx.textAlign = "right"
+    ctx.font = `${fontSize}px ${score.textFont}`
+    ctx.fillText(this.name,
+      this.position.left - score.rastralSize,
+      this.position.top + score.rastralSize*3)
+  }
   draw () {
     this.drawLines()
+    this.drawLabel()
     this.children.forEach(child => child.draw())
-    console.log("drawing staff")
   }
   addClef (clef) {
     this.children.push( new Clef( this.score, this, clef))

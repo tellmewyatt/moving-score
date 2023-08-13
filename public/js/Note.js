@@ -21,6 +21,7 @@ export default class Note {
     const { glyph, score, staff } = this
     const pos = this.getTruePosition()
     const spacing =score.rastralSize*staff.size;
+    score.ctx.textAlign = "left"
     score.ctx.font = `${spacing*(staff.lines-1)}px 'Music'` 
     score.ctx.fillStyle = "black"
     score.ctx.fillText(glyph, pos.left, pos.top)
